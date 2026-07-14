@@ -5,11 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
   // Runs before styles are parsed so there's no flash of the wrong theme.
-  // No storage is used — this simply reflects the system preference for this visit.
+  // The site defaults to light regardless of system preference; the toggle can still switch to dark for the visit.
   (function(){
     try{
-      var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-      document.documentElement.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', 'light');
     }catch(e){}
   })();
 </script>
@@ -513,12 +512,12 @@
     border-top:1px solid var(--line); border-bottom:1px solid var(--line);
   }
   .footer-certs-label{
-    display:block; font-family:var(--font-mono); font-size:0.72rem;
-    color:var(--paper-dim); letter-spacing:0.04em; margin-bottom:16px;
+    display:block; font-family:var(--font-body); font-weight:700; font-size:0.98rem;
+    color:var(--paper); letter-spacing:normal; margin-bottom:20px;
   }
-  .footer-certs-row{display:flex; align-items:center; gap:32px; flex-wrap:wrap;}
-  .cert-logo{height:52px; width:auto; opacity:0.95;}
-  @media (max-width:480px){ .cert-logo{height:40px;} }
+  .footer-certs-row{display:flex; align-items:center; gap:40px; flex-wrap:wrap;}
+  .cert-logo{height:84px; width:auto; opacity:1;}
+  @media (max-width:480px){ .cert-logo{height:64px;} }
   .footer-bottom{display:flex; justify-content:space-between; color:var(--paper-dim); font-size:0.82rem; flex-wrap:wrap; gap:12px;}
   .footer-bottom a{text-decoration:underline; text-underline-offset:3px;}
 
@@ -706,8 +705,8 @@
   .tm-chip.is-active{font-weight:800;}
   .tm-legend{display:flex; gap:22px; flex-wrap:wrap; margin-top:18px;}
   .tm-chart-box{
-    /* deliberately fixed-dark, matches .compare-chart/.demo-chart, so the tuned line colors stay legible in both themes */
-    --bg-deep:#0B1626; --bg-panel:#13223A; --line:#24384F; --paper:#F4EFE3; --paper-dim:#9FB0C3;
+    /* light-gray instrument panel — brighter than the page card so the chart still reads as its own module */
+    --bg-deep:#E9EAED; --bg-panel:#F1F2F4; --line:#DEE0E4; --paper:#1E2126; --paper-dim:#5C6370;
     background:var(--bg-panel); border:1px solid var(--line); border-radius:16px;
     padding:20px 18px 14px; margin-top:16px;
   }
@@ -716,28 +715,36 @@
   .tm-chart-wrap svg{width:100%; height:auto; display:block; overflow:visible;}
   .tm-dot{
     position:absolute; width:9px; height:9px; border-radius:50%;
-    transform:translate(-50%,-50%); border:2px solid #0B1626; pointer-events:none;
+    transform:translate(-50%,-50%); border:2px solid #F1F2F4; pointer-events:none;
+    box-shadow:0 0 0 1px rgba(30,33,38,0.18);
   }
   .tm-ylabel{
     position:absolute; left:6px; transform:translateY(-50%);
-    font-family:var(--font-mono); font-size:0.64rem; color:var(--paper-dim); pointer-events:none;
+    font-family:var(--font-body); font-size:0.78rem; font-weight:700; color:var(--paper); pointer-events:none;
   }
   .tm-xlabels{
-    position:relative; height:18px; margin-top:10px; direction:ltr;
-    font-family:var(--font-mono); font-size:0.68rem; color:var(--paper-dim);
+    position:relative; height:20px; margin-top:12px; direction:ltr;
+    font-family:var(--font-body); font-size:0.8rem; font-weight:700; color:var(--paper);
   }
   .tm-xlabels span{position:absolute; white-space:nowrap; direction:rtl;}
   @media (max-width:700px){ .tm-xlabels span.tm-xl-sm-hide{display:none;} }
   .tm-stats{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px;}
   @media (max-width:640px){ .tm-stats{grid-template-columns:1fr;} }
   .tm-stat{background:var(--bg-deep); border:1px solid var(--line); border-radius:14px; padding:14px 16px;}
-  .tm-stat.is-finooma{border-color:rgba(201,162,39,0.45); background:rgba(201,162,39,0.07);}
-  .tm-stat-name{display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--paper-dim);}
+  .tm-stat.is-finooma{border-color:rgba(36,87,214,0.4); background:rgba(36,87,214,0.06);}
+  .tm-stat-name{display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--paper-dim); font-weight:600;}
   .tm-stat-name i{width:10px; height:10px; border-radius:50%; flex:none;}
-  .tm-stat-val{display:block; font-family:var(--font-mono); font-size:1.02rem; margin-top:8px; color:var(--paper); font-weight:700;}
-  .tm-stat-sub{display:block; font-size:0.8rem; margin-top:6px; font-family:var(--font-mono);}
+  .tm-stat-val{display:block; font-family:var(--font-body); font-size:1.18rem; margin-top:8px; color:var(--paper); font-weight:800; letter-spacing:-0.01em;}
+  .tm-stat-sub{display:block; font-size:0.82rem; margin-top:6px; font-family:var(--font-body); font-weight:600;}
   .tm-stat-sub.is-dd{color:var(--danger-ink);}
   .tm-stat-sub.is-up{color:var(--gold-ink);}
+  /* ---------- مقایسه‌ی «اگر قبلاً در فینوما بودم» داخل نتیجه‌ی کوییز ---------- */
+  .quiz-compare{margin-top:38px; padding-top:30px; border-top:1px solid var(--line);}
+  .quiz-compare h3{font-size:1.3rem; letter-spacing:-0.01em;}
+  .quiz-compare-lede{font-size:0.92rem; color:var(--paper-dim); margin-top:10px; line-height:1.9; max-width:620px;}
+  .tm-stats-3{grid-template-columns:repeat(3,1fr);}
+  @media (max-width:900px){ .tm-stats-3{grid-template-columns:1fr;} }
+  .quiz-compare-note{font-size:0.78rem; color:var(--paper-dim); opacity:0.8; line-height:1.9; margin-top:16px;}
 
   .sim-ranges{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;}
   .sim-range{
@@ -938,49 +945,37 @@
               </div>
             </div>
           </div>
-        </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- WHAT-IF SIMULATOR -->
-  <section id="sim">
-    <div class="wrap">
-      <div class="section-head reveal" style="text-align:center; max-width:680px; margin-inline:auto;">
-        <!-- <span class="eyebrow" style="justify-content:center;">مقایسه‌ی واقع‌بینانه</span> -->
-        <h2>اگر قبلاً سرمایه‌گذاری می‌کردم...</h2>
-        <p class="lede" style="margin-top:14px; margin-inline:auto;">اگر یک میلیون تومان را تنها در یک بازار سرمایه‌گذاری می‌کردید، در مقایسه با سرمایه‌گذاری با سبد پیشنهادی فینوما، امروز کجای این نمودار بودید؟</p>
-      </div>
-
-      <div class="sim-insight reveal">
-        <h3>چرا همه سرمایه را در یک بازار نگذاریم؟</h3>
-        <p>بازه و بازار را انتخاب کنید؛ مسیر واقعی «۱ میلیون تومان» را در برابر پرتفوی فینوما ببینید:</p>
-        <div class="tm-ranges" id="tmRanges">
-          <button type="button" class="sim-range" data-range="6m">۶ ماه</button>
-          <button type="button" class="sim-range" data-range="1y">۱ سال</button>
-          <button type="button" class="sim-range" data-range="3y">۳ سال</button>
-          <button type="button" class="sim-range is-active" data-range="5y">۵ سال</button>
-        </div>
-        <div class="tm-chips" id="tmChips"><!-- rendered by JS --></div>
-        <div class="tm-chart-box">
-          <div class="tm-legend">
-            <span class="chart-legend-item"><i style="background:linear-gradient(90deg,#C9A227,#7FC79E)"></i>پرتفوی متعادل فینوما</span>
-            <span class="chart-legend-item"><i id="tmLegendSwatch"></i><span id="tmLegendName"></span></span>
+          <!-- «اگر قبلاً در فینوما بودم» — مقایسه‌ی سبد شخصیِ همین نتیجه با تورم و درآمد ثابت -->
+          <div class="quiz-compare">
+            <h3>اگر قبلاً در فینوما سرمایه‌گذاری می‌کردم، الان کجا بودم؟</h3>
+            <p class="quiz-compare-lede">مسیر «۱ میلیون تومان» با همین سبد پیشنهادی، در برابر تورم و صندوق درآمد ثابت (۳۶٪ سالانه):</p>
+            <div class="tm-ranges" id="qcRanges">
+              <button type="button" class="sim-range" data-range="6m">۶ ماه</button>
+              <button type="button" class="sim-range" data-range="1y">۱ سال</button>
+              <button type="button" class="sim-range" data-range="3y">۳ سال</button>
+              <button type="button" class="sim-range is-active" data-range="5y">۵ سال</button>
+            </div>
+            <div class="tm-chart-box">
+              <div class="tm-legend">
+                <span class="chart-legend-item"><i style="background:linear-gradient(90deg,#173F9E,#3E7BFA)"></i>سبد پیشنهادی فینوما</span>
+                <span class="chart-legend-item"><i style="background:#D9720A"></i>تورم</span>
+                <span class="chart-legend-item"><i style="background:#0B8457"></i>صندوق درآمد ثابت</span>
+              </div>
+              <div class="tm-chart-wrap" id="qcChartWrap">
+                <svg id="qcChart" viewBox="0 0 640 300" preserveAspectRatio="none" role="img" aria-label="مقایسه‌ی مسیر سبد پیشنهادی فینوما با تورم و صندوق درآمد ثابت"></svg>
+                <div id="qcDots"></div>
+                <div id="qcYlabels"></div>
+                <div class="chart-tooltip" id="qcTooltip" hidden></div>
+              </div>
+              <div class="tm-xlabels" id="qcXlabels"></div>
+            </div>
+            <div class="tm-stats tm-stats-3" id="qcStats"><!-- rendered by JS --></div>
+            <p class="quiz-compare-note">این نمودار بر پایه داده‌های واقعی گذشته تهیه شده و صرفاً جهت نمایش نمونه عملکرد است. بازدهی گذشته تضمینی برای آینده نیست.</p>
           </div>
-          <div class="tm-chart-wrap" id="tmChartWrap">
-            <svg id="tmChart" viewBox="0 0 640 300" preserveAspectRatio="none" role="img" aria-label="مقایسه‌ی مسیر ۵ ساله‌ی دارایی انتخابی با پرتفوی فینوما"></svg>
-            <div id="tmDots"></div>
-            <div id="tmYlabels"></div>
-            <div class="chart-tooltip" id="tmTooltip" hidden></div>
-          </div>
-          <div class="tm-xlabels" id="tmXlabels"></div>
         </div>
-        <div class="tm-stats" id="tmStats"><!-- rendered by JS --></div>
-        <!-- <p class="sim-side-note">فینوما به‌جای شرط‌بستن روی یک دارایی، ترکیبی متناسب با ریسک شما می‌سازد تا هم از رشد بازار سهم ببرید، هم کمتر در معرض نوسان شدید باشید.</p> -->
-      </div>
 
-      <p class="results-disclaimer">این نمودار بر پایه داده‌های واقعی گذشته تهیه شده و صرفاً جهت نمایش نمونه عملکرد است. بازدهی گذشته تضمینی برای آینده نیست.</p>
+      </div>
     </div>
   </section>
 
@@ -1117,8 +1112,8 @@
 <script>
 (function(){
   // ---- theme toggle (light/dark) ----
-  // Note: no localStorage is used here by design; the theme simply follows the
-  // system preference on load and can be flipped for the current visit.
+  // Note: no localStorage is used here by design; the site always starts in
+  // light mode by default and can be flipped to dark for the current visit.
   (function(){
     var root = document.documentElement;
     var toggleBtn = document.getElementById('themeToggle');
@@ -1134,8 +1129,7 @@
       toggleBtn.setAttribute('aria-label', isLight ? 'تغییر به حالت تیره' : 'تغییر به حالت روشن');
     }
 
-    var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-    applyTheme(prefersLight ? 'light' : 'dark');
+    applyTheme('light');
 
     toggleBtn.addEventListener('click', function(){
       var current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
@@ -1423,6 +1417,9 @@
     lastQuizAlloc = alloc;
     lastQuizGoal = quizAnswerTexts[1] || null;
 
+    // نمودار «اگر قبلاً در فینوما بودم» را با وزن‌های همین سبد شخصی از نو بساز
+    if(window.__qcRefresh){ window.__qcRefresh(); }
+
     quizQuestionsEl.hidden = true;
     quizProgressEl.hidden = true;
     quizResultEl.hidden = false;
@@ -1442,7 +1439,7 @@
 
   // ====== EDIT BEFORE PUBLISHING ======
   var BALE_USERNAME = "finooma"; // آیدی بله تیم فینوما (بدون @) — لینک: https://ble.ir/finooma
-  var TELEGRAM_USERNAME = "finooma"; // آیدی تلگرام تیم فینوما (بدون @) — لینک: https://t.me/finooma
+  var TELEGRAM_USERNAME = "Finoomaco"; // آیدی تلگرام تیم فینوما (بدون @) — لینک: https://t.me/Finoomaco
   // =====================================
 
   // ---- فرم مینیمال ارجاع به کارشناسان، همان‌جای نتیجه‌ی کوییز (نام + شماره، بدون فرم جداگانه) ----
@@ -1590,278 +1587,220 @@
     '5y': { finooma:7.805, gold:15.586, crypto:7.458,  equity:4.150,  fx:6.393,  fixed:4.653 }
   };
 
-  // نمودار میله‌ای Race و نمودار خطی «ماشین زمان» در یک ابزار واحد ادغام شدند
-  // (پایین‌تر: بازه‌ی زمانی + انتخاب بازار، روی یک نمودار خطی).
-
-  // ---- "why diversify" insight grid: winner-per-period rotates, Finooma never bottoms out ----
-  // بیشترین افتِ هر دارایی، داخل خودِ همان بازه (سقفِ زودتر با کفِ بعد از آن مقایسه شده)،
-  // مستقیماً از داده‌ی واقعیِ ارائه‌شده توسط کاربر (فایل بازده.xlsx) گرفته شده — نه یک رویداد
-  // تاریخیِ خارج از بازه، و نه تخمین. دلار/ارز و صندوق درآمد ثابت جزو این جدول نیستند چون
-  // هیچ‌کدام در هیچ بازه‌ای دارایی «برنده» نبوده‌اند.
-  var simDrawdownData = {
-    gold:   { '6m':31, '1y':31, '3y':31, '5y':31 },
-    crypto: { '6m':35, '1y':36, '3y':36, '5y':70 },
-    equity: { '6m':19, '1y':27, '3y':27, '5y':27 }
-  };
-  // ---- «ماشین زمان» — ابزار تعاملی چرا-پرتفو ----
-  // مسیر ۵ ساله‌ی هر دارایی از ۵ نقطه‌ی واقعیِ همان داده‌های تأییدشده ساخته می‌شود:
-  // ارزش «۱ میلیون تومانِ ۵ سال پیش» در نقطه‌ی t برابر است با m5y ÷ m(t)
-  // (نسبت فاکتورهای رشد واقعی؛ هیچ عدد جدیدی وارد نشده). بین ۵ نقطه، خط ساده است —
-  // نه قیمت روزانه — و این در دیسکلیمر پایین بخش هم گفته شده.
+  // ---- «اگر قبلاً در فینوما بودم» — نمودار مقایسه داخل نتیجه‌ی کوییز ----
+  // سه خط: (۱) سبد شخصیِ پیشنهادیِ همین کاربر (میانگین وزنی بازدهی واقعی ۵ دارایی با
+  // وزن‌های خروجی کوییز، خرید-و-نگه‌داری)، (۲) تورم، (۳) صندوق درآمد ثابت ۳۶٪ سالانه.
+  // ضرایب تورم — از نرخ‌های تورم سالانه‌ی ارائه‌شده توسط تیم فینوما:
+  // ۱۴۰۰: ۴۶.۲٪ | ۱۴۰۱: ۵۳.۱٪ | ۱۴۰۲: ۴۷.۴٪ | ۱۴۰۳: ۳۵.۸٪ | ۱۴۰۴: ۴۸.۳٪ | ۱۴۰۵: ۵۳.۹٪
+  // (ترکیب هندسی سالانه با لنگر تیرماه — همان قرارداد کسریِ سال صندوق درآمد ثابت.)
   (function(){
-    var tmChartEl = document.getElementById('tmChart');
-    if(!tmChartEl) return;
+    var qcChartEl = document.getElementById('qcChart');
+    if(!qcChartEl) return;
 
-    var tmChipsEl = document.getElementById('tmChips');
-    var tmDotsEl = document.getElementById('tmDots');
-    var tmYlabelsEl = document.getElementById('tmYlabels');
-    var tmXlabelsEl = document.getElementById('tmXlabels');
-    var tmStatsEl = document.getElementById('tmStats');
-    var tmWrapEl = document.getElementById('tmChartWrap');
-    var tmTooltipEl = document.getElementById('tmTooltip');
-    var tmLegendSwatch = document.getElementById('tmLegendSwatch');
-    var tmLegendName = document.getElementById('tmLegendName');
+    var qcDotsEl = document.getElementById('qcDots');
+    var qcYlabelsEl = document.getElementById('qcYlabels');
+    var qcXlabelsEl = document.getElementById('qcXlabels');
+    var qcStatsEl = document.getElementById('qcStats');
+    var qcWrapEl = document.getElementById('qcChartWrap');
+    var qcTooltipEl = document.getElementById('qcTooltip');
 
     var W=640, H=300, PT=26, PB=14, PL=58, PR=20;
     var innerW = W-PL-PR, innerH = H-PT-PB;
-    // برای هر بازه، نقطه‌های داده‌ی موجود در همان پنجره + موقعیت افقی متناسب با زمانِ واقعی
-    var tmWindows = {
-      '6m': [ {k:'6m', f:0,     lbl:'۶ ماه پیش'}, {k:'now', f:1, lbl:'امروز'} ],
-      '1y': [ {k:'1y', f:0,     lbl:'۱ سال پیش'}, {k:'6m', f:0.5, lbl:'۶ ماه پیش'}, {k:'now', f:1, lbl:'امروز'} ],
-      '3y': [ {k:'3y', f:0,     lbl:'۳ سال پیش'}, {k:'1y', f:0.667, lbl:'۱ سال پیش'}, {k:'6m', f:0.833, lbl:'۶ ماه پیش'}, {k:'now', f:1, lbl:'امروز'} ],
-      '5y': [ {k:'5y', f:0,     lbl:'۵ سال پیش'}, {k:'3y', f:0.4, lbl:'۳ سال پیش'}, {k:'1y', f:0.8, lbl:'۱ سال پیش'}, {k:'6m', f:0.9, lbl:'۶ ماه پیش'}, {k:'now', f:1, lbl:'امروز'} ]
+    var qcWindows = {
+      '6m': [ {k:'6m', f:0, lbl:'۶ ماه پیش'}, {k:'now', f:1, lbl:'امروز'} ],
+      '1y': [ {k:'1y', f:0, lbl:'۱ سال پیش'}, {k:'6m', f:0.5, lbl:'۶ ماه پیش'}, {k:'now', f:1, lbl:'امروز'} ],
+      '3y': [ {k:'3y', f:0, lbl:'۳ سال پیش'}, {k:'1y', f:0.667, lbl:'۱ سال پیش'}, {k:'6m', f:0.833, lbl:'۶ ماه پیش'}, {k:'now', f:1, lbl:'امروز'} ],
+      '5y': [ {k:'5y', f:0, lbl:'۵ سال پیش'}, {k:'3y', f:0.4, lbl:'۳ سال پیش'}, {k:'1y', f:0.8, lbl:'۱ سال پیش'}, {k:'6m', f:0.9, lbl:'۶ ماه پیش'}, {k:'now', f:1, lbl:'امروز'} ]
     };
-    var tmRangeNames = { '6m':'۶ ماهه', '1y':'۱ ساله', '3y':'۳ ساله', '5y':'۵ ساله' };
-    var FIN_GOLD = '#C9A227';
+    var qcRangeNames = { '6m':'۶ ماهه', '1y':'۱ ساله', '3y':'۳ ساله', '5y':'۵ ساله' };
+    var qcInflationMult = { '5y':6.759, '3y':3.012, '1y':1.501, '6m':1.233 };
     var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // ضرایب تورم — از نرخ‌های تورم سالانه‌ی ارائه‌شده توسط تیم فینوما:
-    // ۱۴۰۰: ۴۶.۲٪ | ۱۴۰۱: ۵۳.۱٪ | ۱۴۰۲: ۴۷.۴٪ | ۱۴۰۳: ۳۵.۸٪ | ۱۴۰۴: ۴۸.۳٪ | ۱۴۰۵: ۵۳.۹٪
-    // روش: ترکیب هندسی نرخ‌های سالانه با لنگر تیرماه (۴/۱۲ سال) — همان قرارداد پرداخت
-    // کسری سال که برای صندوق درآمد ثابت استفاده شده. مثال: ضریب ۱ ساله =
-    // ۱.۴۸۳^(۸/۱۲) × ۱.۵۳۹^(۴/۱۲) ≈ ۱.۵۰۱.
-    var tmInflationMult = { '5y':6.759, '3y':3.012, '1y':1.501, '6m':1.233 };
-    function tmMult(period, key){
-      if(key === 'inflation'){ return tmInflationMult[period]; }
-      return simMultipliers[period][key];
+    // سری‌ها: رنگ ثابت + نحوه‌ی محاسبه‌ی ضریب هر بازه/نقطه
+    function userWeightMult(period){
+      // میانگین وزنی ضرایب واقعی ۵ دارایی با وزن‌های سبد شخصی کاربر (خروجی کوییز)
+      var alloc = lastQuizAlloc || { fixed:35, gold:20, equity:25, fx:10, crypto:10 };
+      var total = 0;
+      Object.keys(alloc).forEach(function(k){
+        var m = simMultipliers[period] && simMultipliers[period][k];
+        if(m){ total += (alloc[k]/100) * m; }
+      });
+      return total || 1;
     }
-    // مسیر دارایی در پنجره‌ی انتخابی: نقطه‌ی شروع = ۱ میلیون؛ نقطه‌ی میانیِ p برابر است با
-    // ضریبِ کل بازه ÷ ضریبِ باقی‌مانده از p تا امروز (نسبت فاکتورهای رشد واقعی).
-    function tmPathVals(range, key){
-      var mR = tmMult(range, key);
-      return tmWindows[range].map(function(p){
+    function qcMult(period, key){
+      if(key === 'user') return userWeightMult(period);
+      if(key === 'inflation') return qcInflationMult[period];
+      return simMultipliers[period].fixed; // 'fixed'
+    }
+    // مسیر هر سری در پنجره: شروع = ۱ میلیون؛ نقطه‌ی میانی = ضریب کل بازه ÷ ضریب باقی‌مانده.
+    // برای سبد شخصی (خرید-و-نگه‌داری) مقدار در نقطه‌ی p میانگین وزنیِ نسبت رشد تک‌تک دارایی‌هاست.
+    function qcPathVals(range, key){
+      var pts = qcWindows[range];
+      if(key !== 'user'){
+        var mR = qcMult(range, key);
+        return pts.map(function(p){
+          if(p.k === range) return SIM_BASE;
+          if(p.k === 'now') return SIM_BASE * mR;
+          return SIM_BASE * mR / qcMult(p.k, key);
+        });
+      }
+      var alloc = lastQuizAlloc || { fixed:35, gold:20, equity:25, fx:10, crypto:10 };
+      return pts.map(function(p){
         if(p.k === range) return SIM_BASE;
-        if(p.k === 'now') return SIM_BASE * mR;
-        return SIM_BASE * mR / tmMult(p.k, key);
+        var total = 0;
+        Object.keys(alloc).forEach(function(k){
+          var mR = simMultipliers[range][k];
+          if(!mR) return;
+          var growth = (p.k === 'now') ? mR : mR / simMultipliers[p.k][k];
+          total += (alloc[k]/100) * growth;
+        });
+        return SIM_BASE * total;
       });
     }
-    function tmM(v){
+    function qcM(v){
       var m = Math.round(v/1e6*10)/10;
       return toFarsiDigits(String(m));
     }
     function xForF(f){ return PL + innerW * f; }
     function yFor(v, max){ return PT + innerH * (1 - v / max); }
-    function hexToRgba(hex, a){
-      var n = parseInt(hex.slice(1), 16);
-      return 'rgba(' + (n>>16&255) + ',' + (n>>8&255) + ',' + (n&255) + ',' + a + ')';
-    }
 
-    // صندوق درآمد ثابت از این مقایسه حذف شده و به‌جایش «تورم» آمده (طبق تصمیم تیم).
-    var tmSingles = simAssets
-      .filter(function(a){ return !a.isFinooma && a.key !== 'fixed'; })
-      .concat([{ key:'inflation', name:'تورم', color:'#A98FD1' }]);
-    var tmSelectedKey = 'crypto';
-    var tmSelectedRange = '5y';
+    var qcSeries = [
+      { key:'user',      name:'سبد پیشنهادی فینوما', color:'#2457D6', stroke:'url(#qcBlueGrad)', width:3.5 },
+      { key:'inflation', name:'تورم',              color:'#D9720A', stroke:'#D9720A', width:2.75 },
+      { key:'fixed',     name:'صندوق درآمد ثابت',   color:'#0B8457', stroke:'#0B8457', width:2.75 }
+    ];
+    var qcSelectedRange = '5y';
 
-    // --- اسکلت ثابت SVG: گرادیان، خطوط راهنما، دو مسیر، خط عمودی هاور ---
-    var svgParts = ['<defs><linearGradient id="tmGoldGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C9A227"/><stop offset="1" stop-color="#7FC79E"/></linearGradient></defs>'];
+    // --- اسکلت SVG ---
+    var svgParts = ['<defs><linearGradient id="qcBlueGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#173F9E"/><stop offset="1" stop-color="#3E7BFA"/></linearGradient></defs>'];
     for(var g=0; g<=3; g++){
       var gy = PT + (innerH/3)*g;
-      svgParts.push('<line x1="'+PL+'" y1="'+gy+'" x2="'+(W-PR)+'" y2="'+gy+'" stroke="#24384F" stroke-width="1" opacity="0.6"/>');
+      svgParts.push('<line x1="'+PL+'" y1="'+gy+'" x2="'+(W-PR)+'" y2="'+gy+'" stroke="#DCDEE3" stroke-width="1" opacity="0.9"/>');
     }
-    svgParts.push('<path id="tmAssetPath" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>');
-    svgParts.push('<path id="tmFinPath" fill="none" stroke="url(#tmGoldGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>');
-    svgParts.push('<line id="tmGuide" x1="0" y1="'+PT+'" x2="0" y2="'+(H-PB)+'" stroke="#9FB0C3" stroke-width="1" stroke-dasharray="3 4" opacity="0" vector-effect="non-scaling-stroke"/>');
-    tmChartEl.innerHTML = svgParts.join('');
-    var tmAssetPath = document.getElementById('tmAssetPath');
-    var tmFinPath = document.getElementById('tmFinPath');
-    var tmGuide = document.getElementById('tmGuide');
+    qcSeries.forEach(function(s){
+      svgParts.push('<path id="qcPath-'+s.key+'" fill="none" stroke="'+s.stroke+'" stroke-width="'+s.width+'" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>');
+    });
+    svgParts.push('<line id="qcGuide" x1="0" y1="'+PT+'" x2="0" y2="'+(H-PB)+'" stroke="#8B909A" stroke-width="1" stroke-dasharray="3 4" opacity="0" vector-effect="non-scaling-stroke"/>');
+    qcChartEl.innerHTML = svgParts.join('');
+    var qcPathEls = {};
+    qcSeries.forEach(function(s){ qcPathEls[s.key] = document.getElementById('qcPath-'+s.key); });
+    var qcGuide = document.getElementById('qcGuide');
 
-    // --- نقطه‌های دو خط به‌صورت HTML تا در هر عرض صفحه، دایره‌ی کامل بمانند ---
-    var tmDotEls = { asset:[], fin:[] };
-    ['asset','fin'].forEach(function(series){
+    // --- نقطه‌ها (HTML تا همیشه دایره‌ی کامل بمانند) ---
+    var qcDotEls = {};
+    qcSeries.forEach(function(s){
+      qcDotEls[s.key] = [];
       for(var i=0; i<5; i++){
         var d = document.createElement('div');
         d.className = 'tm-dot';
-        if(series === 'fin'){ d.style.background = FIN_GOLD; }
-        tmDotsEl.appendChild(d);
-        tmDotEls[series].push(d);
+        d.style.background = s.color;
+        qcDotsEl.appendChild(d);
+        qcDotEls[s.key].push(d);
       }
     });
 
-    // --- برچسب‌های محور عمودی (۴ سطح) و افقی (۵ نقطه‌ی زمانی) ---
-    var tmYlabelEls = [];
+    // --- برچسب‌های محور ---
+    var qcYlabelEls = [];
     for(var g2=0; g2<=3; g2++){
       var yl = document.createElement('span');
       yl.className = 'tm-ylabel';
       yl.style.top = ((PT + (innerH/3)*g2) / H * 100) + '%';
-      tmYlabelsEl.appendChild(yl);
-      tmYlabelEls.push(yl);
+      qcYlabelsEl.appendChild(yl);
+      qcYlabelEls.push(yl);
     }
     function renderXLabels(range){
-      var pts = tmWindows[range];
+      var pts = qcWindows[range];
       var lastIdx = pts.length - 1;
-      tmXlabelsEl.innerHTML = pts.map(function(p, i){
+      qcXlabelsEl.innerHTML = pts.map(function(p, i){
         var pct = (xForF(p.f)/W*100).toFixed(2);
         var shift = i === 0 ? '0' : (i === lastIdx ? '-100%' : '-50%');
-        // در موبایل، برچسب‌های میانیِ خیلی نزدیک به همسایه‌ها پنهان می‌شوند (اولی و آخری همیشه می‌مانند)
-        var crowded = (i > 0 && i < lastIdx) && ((p.f - pts[i-1].f) < 0.18 || (pts[lastIdx].f - p.f) < 0.18);
+        var crowded = (i > 0 && i < lastIdx) && ((p.f - pts[i-1].f) < 0.22 || (pts[lastIdx].f - p.f) < 0.22);
         return '<span'+(crowded ? ' class="tm-xl-sm-hide"' : '')+' style="left:'+pct+'%; transform:translateX('+shift+')">'+p.lbl+'</span>';
       }).join('');
     }
 
-    // --- وضعیت نمایش فعلی + تووین بین حالت‌ها ---
-    var cur = null; // { range, a:[N], f:[N], max }
-    var tweenRaf = null;
+    var cur = null; // { range, vals:{user:[],inflation:[],fixed:[]}, max }
 
-    function drawFrame(range, aVals, fVals, max){
-      var pts = tmWindows[range];
+    function qcRender(range){
+      var pts = qcWindows[range];
       var n = pts.length;
-      var dA = '', dF = '';
-      for(var i=0; i<5; i++){
-        var inUse = i < n;
-        tmDotEls.asset[i].style.display = inUse ? '' : 'none';
-        tmDotEls.fin[i].style.display = inUse ? '' : 'none';
-        if(!inUse) continue;
-        var xa = xForF(pts[i].f), ya = yFor(aVals[i], max), yf = yFor(fVals[i], max);
-        dA += (i===0?'M':'L') + xa.toFixed(1) + ',' + ya.toFixed(1) + ' ';
-        dF += (i===0?'M':'L') + xa.toFixed(1) + ',' + yf.toFixed(1) + ' ';
-        tmDotEls.asset[i].style.left = (xa/W*100) + '%';
-        tmDotEls.asset[i].style.top = (ya/H*100) + '%';
-        tmDotEls.fin[i].style.left = (xa/W*100) + '%';
-        tmDotEls.fin[i].style.top = (yf/H*100) + '%';
-      }
-      tmAssetPath.setAttribute('d', dA.trim());
-      tmFinPath.setAttribute('d', dF.trim());
+      var vals = {};
+      var max = 0;
+      qcSeries.forEach(function(s){
+        vals[s.key] = qcPathVals(range, s.key);
+        max = Math.max(max, Math.max.apply(null, vals[s.key]));
+      });
+      max *= 1.08;
+      cur = { range: range, vals: vals, max: max };
+
+      qcSeries.forEach(function(s){
+        var d = '';
+        for(var i=0; i<5; i++){
+          var inUse = i < n;
+          qcDotEls[s.key][i].style.display = inUse ? '' : 'none';
+          if(!inUse) continue;
+          var x = xForF(pts[i].f), y = yFor(vals[s.key][i], max);
+          d += (i===0?'M':'L') + x.toFixed(1) + ',' + y.toFixed(1) + ' ';
+          qcDotEls[s.key][i].style.left = (x/W*100) + '%';
+          qcDotEls[s.key][i].style.top = (y/H*100) + '%';
+        }
+        qcPathEls[s.key].setAttribute('d', d.trim());
+      });
       for(var g3=0; g3<=3; g3++){
-        tmYlabelEls[g3].textContent = tmM(max * (1 - g3/3)) + ' م';
+        qcYlabelEls[g3].textContent = qcM(max * (1 - g3/3)) + ' م';
       }
-    }
-
-    function tmUpdate(instant){
-      var key = tmSelectedKey, range = tmSelectedRange;
-      var asset = tmSingles.filter(function(a){ return a.key === key; })[0];
-      var target = tmPathVals(range, key);
-      var finTarget = tmPathVals(range, 'finooma');
-      var n = target.length;
-      var targetMax = Math.max(
-        Math.max.apply(null, target),
-        Math.max.apply(null, finTarget)
-      ) * 1.08;
-
-      // دکمه‌های بازه، چیپ‌ها، رنگ خط، لجند
-      document.querySelectorAll('#tmRanges .sim-range').forEach(function(b){
-        b.classList.toggle('is-active', b.getAttribute('data-range') === range);
-      });
-      tmChipsEl.querySelectorAll('.tm-chip').forEach(function(c){
-        var active = c.getAttribute('data-key') === key;
-        c.classList.toggle('is-active', active);
-        var col = c.getAttribute('data-color');
-        c.style.borderColor = active ? col : '';
-        c.style.background = active ? hexToRgba(col, 0.14) : '';
-      });
-      tmAssetPath.setAttribute('stroke', asset.color);
-      tmDotEls.asset.forEach(function(d){ d.style.background = asset.color; });
-      if(tmLegendSwatch){ tmLegendSwatch.style.background = asset.color; }
-      if(tmLegendName){ tmLegendName.textContent = asset.name; }
       renderXLabels(range);
 
-      // کارت‌های جمع‌بندی زیر نمودار — همه بر اساس بازه‌ی انتخابی
-      var dd = simDrawdownData[key] && simDrawdownData[key][range];
-      var assetSub = dd
-        ? '<span class="tm-stat-sub is-dd">▼ بیشترین افت در همین بازه: ' + toFarsiDigits(dd) + '٪</span>'
-        : '';
-      var assetTileName = asset.name + ' (تنها)';
-      var assetTileVal = 'از ۱ به ' + tmM(target[n-1]) + ' میلیون تومان';
-      if(key === 'inflation'){
-        assetTileName = 'تورم (هزینه‌ی زندگی)';
-        assetTileVal = 'سبد ۱ میلیونی آن روز، امروز ' + tmM(target[n-1]) + ' میلیون تومان';
-        assetSub = '<span class="tm-stat-sub is-dd">حداقلِ لازم فقط برای حفظ قدرت خرید</span>';
-      }
-      var finRet = Math.round((simMultipliers[range].finooma - 1) * 100);
-      tmStatsEl.innerHTML =
-        '<div class="tm-stat">' +
-          '<span class="tm-stat-name"><i style="background:' + asset.color + '"></i>' + assetTileName + '</span>' +
-          '<b class="tm-stat-val">' + assetTileVal + '</b>' +
-          assetSub +
-        '</div>' +
+      // کارت‌های جمع‌بندی — همه برای بازه‌ی انتخابی
+      var userRet = Math.round((userWeightMult(range) - 1) * 100);
+      qcStatsEl.innerHTML =
         '<div class="tm-stat is-finooma">' +
-          '<span class="tm-stat-name"><i style="background:linear-gradient(90deg,#C9A227,#7FC79E)"></i>پرتفوی متعادل فینوما</span>' +
-          '<b class="tm-stat-val">از ۱ به ' + tmM(finTarget[n-1]) + ' میلیون تومان</b>' +
-          '<span class="tm-stat-sub is-up">▲ بازدهی ' + tmRangeNames[range] + ': ' + toFarsiDigits(finRet) + '٪</span>' +
+          '<span class="tm-stat-name"><i style="background:linear-gradient(90deg,#173F9E,#3E7BFA)"></i>سبد پیشنهادی فینوما</span>' +
+          '<b class="tm-stat-val">از ۱ به ' + qcM(vals.user[n-1]) + ' میلیون تومان</b>' +
+          '<span class="tm-stat-sub is-up">▲ بازدهی ' + qcRangeNames[range] + ': ' + toFarsiDigits(userRet) + '٪</span>' +
+        '</div>' +
+        '<div class="tm-stat">' +
+          '<span class="tm-stat-name"><i style="background:#D9720A"></i>تورم (هزینه‌ی زندگی)</span>' +
+          '<b class="tm-stat-val">از ۱ به ' + qcM(vals.inflation[n-1]) + ' میلیون تومان</b>' +
+          '<span class="tm-stat-sub is-dd">حداقلِ لازم فقط برای حفظ قدرت خرید</span>' +
+        '</div>' +
+        '<div class="tm-stat">' +
+          '<span class="tm-stat-name"><i style="background:#0B8457"></i>صندوق درآمد ثابت (۳۶٪)</span>' +
+          '<b class="tm-stat-val">از ۱ به ' + qcM(vals.fixed[n-1]) + ' میلیون تومان</b>' +
+          '<span class="tm-stat-sub is-dd">' + (vals.fixed[n-1] < vals.inflation[n-1] ? 'از تورم جا می‌ماند' : 'هم‌پای تورم') + '</span>' +
         '</div>';
+    }
 
-      // تووین نرم فقط وقتی تعداد نقطه‌ها ثابت است (تغییر دارایی در همان بازه)؛
-      // با تغییر بازه، نمودار با یک محوشدن کوتاه از نو رسم می‌شود.
-      if(tweenRaf){ cancelAnimationFrame(tweenRaf); tweenRaf = null; }
-      var sameShape = cur && cur.range === range;
-      if(instant || reduceMotion || !sameShape){
-        cur = { range: range, a: target.slice(), f: finTarget.slice(), max: targetMax };
-        if(!instant && !reduceMotion && tmWrapEl){
-          tmWrapEl.style.transition = 'opacity .16s ease';
-          tmWrapEl.style.opacity = '0';
-          setTimeout(function(){
-            drawFrame(range, cur.a, cur.f, cur.max);
-            tmWrapEl.style.opacity = '1';
-            setTimeout(function(){ tmWrapEl.style.transition = ''; }, 220);
-          }, 170);
-        } else {
-          drawFrame(range, cur.a, cur.f, cur.max);
-        }
+    function qcSetRange(range, instant){
+      qcSelectedRange = range;
+      document.querySelectorAll('#qcRanges .sim-range').forEach(function(b){
+        b.classList.toggle('is-active', b.getAttribute('data-range') === range);
+      });
+      if(instant || reduceMotion || !qcWrapEl){
+        qcRender(range);
         return;
       }
-      var from = { a: cur.a.slice(), max: cur.max };
-      cur = { range: range, a: target.slice(), f: finTarget.slice(), max: targetMax };
-      var start = null, duration = 520;
-      function step(ts){
-        if(start === null) start = ts;
-        var p = Math.min((ts - start) / duration, 1);
-        var e = 1 - Math.pow(1 - p, 3);
-        var mixMax = from.max + (targetMax - from.max) * e;
-        var mixA = from.a.map(function(v, i){ return v + (target[i] - v) * e; });
-        drawFrame(range, mixA, finTarget, mixMax);
-        if(p < 1){ tweenRaf = requestAnimationFrame(step); }
-        else { tweenRaf = null; }
-      }
-      tweenRaf = requestAnimationFrame(step);
+      qcWrapEl.style.transition = 'opacity .16s ease';
+      qcWrapEl.style.opacity = '0';
+      setTimeout(function(){
+        qcRender(range);
+        qcWrapEl.style.opacity = '1';
+        setTimeout(function(){ qcWrapEl.style.transition = ''; }, 220);
+      }, 170);
     }
-    function tmSelect(key, instant){ tmSelectedKey = key; tmUpdate(instant); }
-    function tmSetRange(range){ tmSelectedRange = range; tmUpdate(false); }
 
-    // --- چیپ‌های انتخاب دارایی ---
-    tmChipsEl.innerHTML = tmSingles.map(function(a){
-      return '<button type="button" class="tm-chip" data-key="' + a.key + '" data-color="' + a.color + '">' +
-        '<i style="background:' + a.color + '"></i>' + a.name + '</button>';
-    }).join('');
-    tmChipsEl.querySelectorAll('.tm-chip').forEach(function(c){
-      c.addEventListener('click', function(){
-        if(c.getAttribute('data-key') !== tmSelectedKey){ tmSelect(c.getAttribute('data-key')); }
-      });
-    });
-
-    // --- دکمه‌های بازه‌ی زمانی ---
-    document.querySelectorAll('#tmRanges .sim-range').forEach(function(b){
+    document.querySelectorAll('#qcRanges .sim-range').forEach(function(b){
       b.addEventListener('click', function(){
         var r = b.getAttribute('data-range');
-        if(r !== tmSelectedRange){ tmSetRange(r); }
+        if(r !== qcSelectedRange){ qcSetRange(r, false); }
       });
     });
 
-    // --- هاور: خط عمودی + تولتیپ با مقدار هر دو خط در نزدیک‌ترین نقطه‌ی زمانیِ بازه‌ی فعال ---
-    function tmHover(e){
+    // --- هاور/لمس: خط راهنما + تولتیپ سه‌سری ---
+    function qcHover(e){
       if(!cur) return;
-      var pts = tmWindows[cur.range];
-      var rect = tmChartEl.getBoundingClientRect();
+      var pts = qcWindows[cur.range];
+      var rect = qcChartEl.getBoundingClientRect();
       var clientX = e.touches ? e.touches[0].clientX : e.clientX;
       var relX = (clientX - rect.left) / rect.width * W;
       var best = 0, bestDist = Infinity;
@@ -1870,59 +1809,59 @@
         if(d < bestDist){ bestDist = d; best = i; }
       }
       var x = xForF(pts[best].f);
-      tmGuide.setAttribute('x1', x); tmGuide.setAttribute('x2', x);
-      tmGuide.setAttribute('opacity', '1');
-      var asset = tmSingles.filter(function(a){ return a.key === tmSelectedKey; })[0];
-      tmTooltipEl.innerHTML =
-        '<span class="tt-month">' + pts[best].lbl + '</span>' +
-        '<div class="tt-row"><i style="background:' + FIN_GOLD + '"></i>پرتفوی فینوما: <b>' + tmM(cur.f[best]) + ' میلیون ت</b></div>' +
-        '<div class="tt-row"><i style="background:' + asset.color + '"></i>' + asset.name + ': <b>' + tmM(cur.a[best]) + ' میلیون ت</b></div>';
-      var pctX = Math.max(10, Math.min(90, x / W * 100));
-      tmTooltipEl.style.right = 'auto';
-      tmTooltipEl.style.left = pctX + '%';
-      var topY = Math.min(yFor(cur.a[best], cur.max), yFor(cur.f[best], cur.max));
-      tmTooltipEl.style.top = Math.max((topY / H * 100) - 4, 0) + '%';
-      tmTooltipEl.hidden = false;
+      qcGuide.setAttribute('x1', x); qcGuide.setAttribute('x2', x);
+      qcGuide.setAttribute('opacity', '1');
+      var rows = qcSeries.map(function(s){
+        return '<div class="tt-row"><i style="background:' + s.color + '"></i>' + s.name + ': <b>' + qcM(cur.vals[s.key][best]) + ' میلیون ت</b></div>';
+      }).join('');
+      qcTooltipEl.innerHTML = '<span class="tt-month">' + pts[best].lbl + '</span>' + rows;
+      var pctX = Math.max(12, Math.min(88, x / W * 100));
+      qcTooltipEl.style.right = 'auto';
+      qcTooltipEl.style.left = pctX + '%';
+      var topY = Math.min(
+        yFor(cur.vals.user[best], cur.max),
+        yFor(cur.vals.inflation[best], cur.max),
+        yFor(cur.vals.fixed[best], cur.max)
+      );
+      qcTooltipEl.style.top = Math.max((topY / H * 100) - 4, 0) + '%';
+      qcTooltipEl.hidden = false;
     }
-    function tmHideHover(){
-      tmGuide.setAttribute('opacity', '0');
-      tmTooltipEl.hidden = true;
+    function qcHideHover(){
+      qcGuide.setAttribute('opacity', '0');
+      qcTooltipEl.hidden = true;
     }
-    tmWrapEl.addEventListener('mousemove', tmHover);
-    tmWrapEl.addEventListener('touchstart', tmHover, { passive:true });
-    tmWrapEl.addEventListener('mouseleave', tmHideHover);
+    qcWrapEl.addEventListener('mousemove', qcHover);
+    qcWrapEl.addEventListener('touchstart', qcHover, { passive:true });
+    qcWrapEl.addEventListener('mouseleave', qcHideHover);
 
-    // --- رندر اولیه + انیمیشن ترسیم خط‌ها هنگام رسیدن کاربر به این بخش ---
-    tmSelect(tmSelectedKey, true);
-    if(!reduceMotion && 'IntersectionObserver' in window){
-      var paths = [tmAssetPath, tmFinPath];
-      paths.forEach(function(p){
-        var len = p.getTotalLength();
-        p.style.strokeDasharray = len + ' ' + len;
-        p.style.strokeDashoffset = len;
-      });
-      // نقطه‌ها هم تا زمان ترسیم خط‌ها پنهان می‌مانند تا «نقطه‌ی معلق بدون خط» دیده نشود
-      tmDotsEl.style.opacity = '0';
-      var tmIo = new IntersectionObserver(function(entries){
-        entries.forEach(function(entry){
-          if(!entry.isIntersecting) return;
-          paths.forEach(function(p, i){
-            requestAnimationFrame(function(){
-              p.style.transition = 'stroke-dashoffset 1.3s cubic-bezier(.16,.8,.28,1) ' + (i*0.15) + 's';
-              p.style.strokeDashoffset = '0';
-            });
+    // هر بار که نتیجه‌ی کوییز ساخته می‌شود (سبد شخصی جدید)، نمودار با همان وزن‌ها از نو رندر می‌شود
+    // + انیمیشن ترسیم خط‌ها در اولین نمایش.
+    var qcRevealed = false;
+    window.__qcRefresh = function(){
+      qcSetRange(qcSelectedRange, true);
+      if(qcRevealed || reduceMotion) return;
+      qcRevealed = true;
+      var paths = qcSeries.map(function(s){ return qcPathEls[s.key]; });
+      requestAnimationFrame(function(){
+        paths.forEach(function(p, i){
+          var len = p.getTotalLength();
+          if(!len) return;
+          p.style.strokeDasharray = len + ' ' + len;
+          p.style.strokeDashoffset = len;
+          requestAnimationFrame(function(){
+            p.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(.16,.8,.28,1) ' + (i*0.14) + 's';
+            p.style.strokeDashoffset = '0';
           });
-          tmDotsEl.style.transition = 'opacity .6s ease .85s';
-          requestAnimationFrame(function(){ tmDotsEl.style.opacity = '1'; });
-          setTimeout(function(){
-            paths.forEach(function(p){ p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; p.style.transition = ''; });
-            tmDotsEl.style.transition = '';
-          }, 1900);
-          tmIo.disconnect();
         });
-      }, { threshold: 0.3 });
-      tmIo.observe(tmWrapEl);
-    }
+        qcDotsEl.style.opacity = '0';
+        qcDotsEl.style.transition = 'opacity .6s ease .8s';
+        requestAnimationFrame(function(){ qcDotsEl.style.opacity = '1'; });
+        setTimeout(function(){
+          paths.forEach(function(p){ p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; p.style.transition = ''; });
+          qcDotsEl.style.transition = '';
+        }, 1900);
+      });
+    };
   })();
 
   // ---- comparison line chart (sample data — replace before publishing) ----
@@ -2001,6 +1940,7 @@
   }
 
   function revealLineChart(){
+    if(!lineChartEl) return; // بخش «عملکرد» فعلاً از صفحه حذف شده است
     var paths = lineChartEl.querySelectorAll('.line-path');
     paths.forEach(function(path, i){
       requestAnimationFrame(function(){
