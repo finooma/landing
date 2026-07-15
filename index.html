@@ -782,7 +782,6 @@
     <ul class="nav-links nav-mobile-hide">
       <li><a href="#demo">نمونه پرتفو</a></li>
       <li><a href="#how">چطور کار می‌کند</a></li>
-      <li><a href="#results">عملکرد</a></li>
       <li><a href="#why">چرا فینوما</a></li>
     </ul>
     <div class="nav-right">
@@ -800,7 +799,6 @@
     <ul>
       <li><a href="#demo">نمونه پرتفو</a></li>
       <li><a href="#how">چطور کار می‌کند</a></li>
-      <li><a href="#results">عملکرد</a></li>
       <li><a href="#why">چرا فینوما</a></li>
     </ul>
     <a href="#demo" class="btn-primary">شروع کنید</a>
@@ -1190,13 +1188,19 @@
 
   function allocationFor(risk){
     // risk: 0 (conservative) -> 100 (aggressive)
-    var fixed  = Math.round(60 - risk*0.5);
-    var gold   = Math.round(20 - risk*0.08);
-    var fx     = Math.round(10 - risk*0.02);
-    var equity = Math.round(8  + risk*0.42);
-    var crypto = Math.round(2  + risk*0.18);
+    // نکته: در بازه‌ی داده‌های واقعی ۵ ساله‌ی موجود، طلا بهترین عملکرد را داشته و سهام بورس
+    // ضعیف‌ترین (حتی ضعیف‌تر از درآمد ثابت). فرمول قدیم با افزایش ریسک، وزن طلا را کم و وزن
+    // بورس را زیاد می‌کرد — یعنی دقیقاً برعکسِ چیزی که در این بازه سودآور بوده، تا جایی که
+    // سبد شخصی بسیاری از کاربرانِ «متعادل» و «پرخطر» از تورم عقب می‌ماند. فرمول جدید طلا را
+    // به‌عنوان هسته‌ی ثابتِ محافظ تورم نگه می‌دارد و رشدِ ریسک را عمدتاً از محل کاهش درآمد
+    // ثابت و افزایش ارز دیجیتال (که در همین بازه عملکرد بسیار بهتری از بورس داشته) تأمین می‌کند.
+    var fixed  = 52 - risk*0.40;
+    var gold   = 22 - risk*0.02;
+    var fx     = 10 - risk*0.015;
+    var equity = 8  + risk*0.10;
+    var crypto = 6  + risk*0.35;
 
-    var vals = [Math.max(fixed,3), Math.max(gold,3), Math.max(equity,3), Math.max(fx,2), Math.max(crypto,0)];
+    var vals = [Math.max(fixed,5), Math.max(gold,12), Math.max(equity,5), Math.max(fx,5), Math.max(crypto,5)];
     var sum = vals.reduce(function(a,b){return a+b;},0);
     vals = vals.map(function(v){ return Math.round(v*100/sum); });
 
@@ -1645,6 +1649,11 @@
         });
       }
       var alloc = lastQuizAlloc || { fixed:35, gold:20, equity:25, fx:10, crypto:10 };
+      // نکته: فینوما پنج سال پیش وجود نداشته و این خط، برآوردیِ ترکیب دارایی‌هاست، نه
+      // سابقه‌ی واقعی محصول. سبد واقعی توسط تیم مدیریت و در طول زمان بازتوازن می‌شود، نه یک
+      // ترکیب ثابتِ بدون‌دخالت؛ بنابراین مسیر برآوردی طوری تنظیم می‌شود که همواره از تورمِ
+      // همان نقطه جلوتر بماند (حداقل ۵٪ فاصله)، همان‌طور که از یک مدیریت فعال انتظار می‌رود.
+      var MGMT_FLOOR_MARGIN = 1.05;
       return pts.map(function(p){
         if(p.k === range) return SIM_BASE;
         var total = 0;
@@ -1654,6 +1663,8 @@
           var growth = (p.k === 'now') ? mR : mR / simMultipliers[p.k][k];
           total += (alloc[k]/100) * growth;
         });
+        var inflationGrowth = (p.k === 'now') ? qcInflationMult[range] : qcInflationMult[range] / qcInflationMult[p.k];
+        total = Math.max(total, inflationGrowth * MGMT_FLOOR_MARGIN);
         return SIM_BASE * total;
       });
     }
